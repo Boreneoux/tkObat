@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    mongo:
+        image: mongo:latest
+        container_name: mongo_tkObat
+        ports:
+            - '27017:27017'
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: p455w0rd
+        volumes:
+            - ./mongo:/mongo/db
