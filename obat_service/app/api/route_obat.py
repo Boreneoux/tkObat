@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from api.model_obat import Obat 
-from api.db import conn 
-from api.schema_obat import serializeDict, serializeList
+from app.api.model_obat import Obat 
+from app.api.db import conn 
+from app.api.schema_obat import serializeDict, serializeList
 from bson import ObjectId
 obat = APIRouter() 
 
@@ -26,5 +26,5 @@ async def update_obat(id,obat: Obat):
     return serializeDict(conn.obats.obat.find_one({"_id":ObjectId(id)}))
 
 @obat.delete('/{id}')
-async def delete_obat(id,obat: Obat):
+async def delete_obat(id):
     return serializeDict(conn.obats.obat.find_one_and_delete({"_id":ObjectId(id)}))

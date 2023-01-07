@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from api.model_transaksi import Transaksi 
-from api.db import conn 
-from api.db import dbObat
+from app.api.model_transaksi import Transaksi 
+from app.api.db import conn 
+from app.api.db import dbObat
 # from api.db import dbUser
-from api.schema_transaksi import serializeDict, serializeList
+from app.api.schema_transaksi import serializeDict, serializeList
 from bson import ObjectId
 transaksi = APIRouter() 
 
@@ -35,5 +35,5 @@ async def create_transaksi(transaksi: Transaksi):
 #     return serializeDict(conn.transactions.transaksi.find_one({"_id":ObjectId(id)}))
 
 @transaksi.delete('/{id}')
-async def delete_transaksi(id,transaksi: Transaksi):
+async def delete_transaksi(id):
     return serializeDict(conn.transactions.transaksi.find_one_and_delete({"_id":ObjectId(id)}))

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from api.model_user import User 
-from api.db import conn 
-from api.schema_user import serializeDict, serializeList
+from app.api.model_user import User 
+from app.api.db import conn 
+from app.api.schema_user import serializeDict, serializeList
 from bson import ObjectId
 user = APIRouter() 
 
@@ -26,5 +26,5 @@ async def update_user(id,user: User):
     return serializeDict(conn.users.user.find_one({"_id":ObjectId(id)}))
 
 @user.delete('/{id}')
-async def delete_user(id,user: User):
+async def delete_user(id):
     return serializeDict(conn.users.user.find_one_and_delete({"_id":ObjectId(id)}))
