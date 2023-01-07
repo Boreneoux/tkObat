@@ -1,6 +1,6 @@
 def transaksiEntity(item) -> dict:
     return {
-        "id_transaksi":str(item["id_transaksi"]),
+        "id_transaksi":str(item["_id"]),
         "kd_obat":item["kd_obat"],
         "quantity":item["quantity"],
         "harga":item["harga"],

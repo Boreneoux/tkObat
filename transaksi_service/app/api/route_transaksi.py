@@ -1,6 +1,8 @@
 from fastapi import APIRouter
-from api.model_transaksi import transaksi 
+from api.model_transaksi import Transaksi 
 from api.db import conn 
+from api.db import dbObat
+# from api.db import dbUser
 from api.schema_transaksi import serializeDict, serializeList
 from bson import ObjectId
 transaksi = APIRouter() 
@@ -9,26 +11,29 @@ transaksi = APIRouter()
 
 @transaksi.get('/')
 async def find_all_transaksi():
-    return serializeList(conn.users.transaksi.find())
+    return serializeList(conn.transactions.transaksi.find())
 
-# localhost/{T001} -> GET 
+# transactionshost/{T001} -> GET 
 
 @transaksi.get('/{id}')
 async def find_one_transaksi(id):
-    return serializeDict(conn.local.transaksi.find_one({"_id":ObjectId(id)}))
+    return serializeDict(conn.transactions.transaksi.find_one({"_id":ObjectId(id)}))
 
 @transaksi.post('/')
-async def create_transaksi(transaksi: transaksi):
-    conn.users.transaksi.insert_one(dict(transaksi))
-    return serializeList(conn.users.transaksi.find())
-
-@transaksi.put('/{id}')
-async def update_transaksi(id,transaksi: transaksi):
-    conn.users.transaksi.find_one_and_update({"_id":ObjectId(id)},{
-        "$set":dict(transaksi)
+async def create_transaksi(transaksi: Transaksi):
+    conn.transactions.transaksi.insert_one(dict(transaksi))
+    dbObat.obats.obat.find_one_and_update({"kd_obat":transaksi.kd_obat}, {
+       "$set": {"stok": transaksi.stok}
     })
-    return serializeDict(conn.users.transaksi.find_one({"_id":ObjectId(id)}))
+    return serializeList(conn.transactions.transaksi.find())
+
+# @transaksi.put('/{id}')
+# async def update_transaksi(id,transaksi: Transaksi):
+#     conn.transactions.transaksi.find_one_and_update({"_id":ObjectId(id)},{
+#         "$set":dict(transaksi)
+#     })
+#     return serializeDict(conn.transactions.transaksi.find_one({"_id":ObjectId(id)}))
 
 @transaksi.delete('/{id}')
-async def delete_transaksi(id,transaksi: transaksi):
-    return serializeDict(conn.users.transaksi.find_one_and_delete({"_id":ObjectId(id)}))
+async def delete_transaksi(id,transaksi: Transaksi):
+    return serializeDict(conn.transactions.transaksi.find_one_and_delete({"_id":ObjectId(id)}))

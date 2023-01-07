@@ -1,6 +1,7 @@
 def obatEntity(item) -> dict:
     return {
-        "kd_obat":str(item["kd_obat"]),
+        "id_obat":str(item["_id"]),
+        "kd_obat":(item["kd_obat"]),
         "nama_obat":item["nama_obat"],
         "jenis_obat":item["jenis_obat"],
         "harga":item["harga"],
